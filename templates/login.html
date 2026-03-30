@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Medicare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/templatemo-neural-style.css') }}" rel="stylesheet">
+    <style>
+        /* Custom styles for the login form container */
+        .login-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding-top: 120px; /* Space for the header */
+            padding-bottom: 80px;  /* Space for the footer */
+        }
+        .login-form-container {
+            max-width: 450px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+        .login-form-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #e0a3ff, #ff69b4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+        .login-button {
+            display: inline-block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #e0a3ff, #ff69b4);
+            color: #000;
+            text-decoration: none;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(224, 163, 255, 0.2);
+            cursor: pointer;
+        }
+        .login-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(224, 163, 255, 0.3);
+        }
+        .register-link {
+            margin-top: 25px;
+            color: #ccc;
+        }
+        .register-link a {
+            color: #e0a3ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        .flash-message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            color: #fff;
+            background: rgba(255, 0, 80, 0.3);
+            border: 1px solid rgba(255, 0, 80, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="neural-background"></div>
+    <div class="geometric-shapes">
+        <div class="shape"></div> <div class="shape"></div> <div class="shape"></div> <div class="shape"></div>
+    </div>
+    <div class="neural-lines">
+        <div class="neural-line"></div> <div class="neural-line"></div> <div class="neural-line"></div>
+    </div>
+
+    <header class="glass">
+        <nav>
+            <a href="{{ url_for('login') }}" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e0a3ff"/><stop offset="50%" style="stop-color:#ff69b4"/><stop offset="100%" style="stop-color:#9370db"/></linearGradient></defs><circle cx="50" cy="30" r="8" fill="url(#logoGradient)"/><circle cx="30" cy="60" r="6" fill="url(#logoGradient)"/><circle cx="70" cy="65" r="7" fill="url(#logoGradient)"/><line x1="50" y1="30" x2="30" y2="60" stroke="url(#logoGradient)" stroke-width="2"/><line x1="50" y1="30" x2="70" y2="65" stroke="url(#logoGradient)" stroke-width="2"/><line x1="30" y1="60" x2="70" y2="65" stroke="url(#logoGradient)" stroke-width="2"/></svg>
+                Medicare
+            </a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+            </ul>
+            <div class="mobile-menu-toggle">
+                <div class="hamburger-line"></div><div class="hamburger-line"></div><div class="hamburger-line"></div>
+            </div>
+        </nav>
+        <div class="mobile-nav">
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+    </header>
+
+    <section class="login-section" id="login">
+        <div class="login-form-container glass-strong">
+            <h1>Welcome Back</h1>
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="form-group">
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-message">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <p class="register-link">Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-copyright">
+                <p>&copy; 2025 Medicare Project. All Rights Reserved.</p>
+            </div>
+            <div class="footer-design">
+                Design based on <a href="https://templatemo.com" target="_blank" rel="nofollow noopener">TemplateMo</a>'s Neural Glass
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/templatemo-neural-scripts.js') }}"></script>
+</body>
+</html>
