@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwasthAI - Virtual First Doctor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #e6f7ff; }
+        .main-container { max-width: 900px; margin: 30px auto; background: white; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: flex; }
+        .chat-header { background-color: #007bff; color: white; padding: 1rem; border-top-right-radius: 15px; }
+        .chat-box { height: 500px; overflow-y: auto; padding: 1rem; }
+        .chat-input { padding: 1rem; border-top: 1px solid #ddd; }
+        .msg-bubble { white-space: pre-wrap; }
+        .sidebar { padding: 1rem; background-color: #f8f9fa; width: 300px; border-top-left-radius: 15px; border-bottom-left-radius: 15px; }
+        .chat-area { flex-grow: 1; }
+        .user-msg { text-align: right; margin-bottom: 1rem; }
+        .ai-msg { text-align: left; margin-bottom: 1rem; }
+        .msg-bubble { display: inline-block; padding: 10px 15px; border-radius: 20px; max-width: 90%; }
+        .user-bubble { background-color: #007bff; color: white; }
+        .ai-bubble { background-color: #f1f1f1; color: black; }
+        .form-container { display: none; /* Hidden by default */ }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="sidebar">
+            <h4 class="text-center">Dashboard</h4>
+            <div class="d-grid gap-2 mt-3">
+                <button class="btn btn-outline-primary" type="button" onclick="showPanel('profile-panel')">Patient Profile</button>
+                <button class="btn btn-outline-primary" type="button" onclick="showPanel('predict-panel')">Predict Disease</button>
+                <button class="btn btn-outline-primary" type="button" onclick="showPanel('analyze-panel')">Analyze Prescription</button>
+            </div>
+            <hr>
+
+            <div id="profile-panel" class="form-container">
+                <h5>Your Profile</h5>
+                <form id="user-info-form">
+                    <div class="mb-2"><label for="age" class="form-label">Age</label><input type="number" class="form-control" id="age"></div>
+                    <div class="mb-2"><label for="allergies" class="form-label">Allergies</label><textarea class="form-control" id="allergies" rows="3"></textarea></div>
+                    <div class="mb-2"><label for="medical_history" class="form-label">Medical History</label><textarea class="form-control" id="medical_history" rows="3"></textarea></div>
+                    <button type="button" class="btn btn-success w-100" onclick="updateUserInfo()">Update Profile</button>
+                </form>
+            </div>
+
+            <div id="predict-panel" class="form-container">
+                <h5>Enter Up to 5 Symptoms</h5>
+                <form id="symptoms-form">
+                    <input type="text" class="form-control mb-2" id="symptom1" placeholder="Symptom 1 (e.g., Fever)" required>
+                    <input type="text" class="form-control mb-2" id="symptom2" placeholder="Symptom 2">
+                    <input type="text" class="form-control mb-2" id="symptom3" placeholder="Symptom 3">
+                    <input type="text" class="form-control mb-2" id="symptom4" placeholder="Symptom 4">
+                    <input type="text" class="form-control mb-2" id="symptom5" placeholder="Symptom 5">
+                    <button type="submit" class="btn btn-success w-100">Start Prediction</button>
+                </form>
+            </div>
+
+            <div id="analyze-panel" class="form-container">
+                <h5>Analyze Prescription</h5>
+                <form id="prescription-form">
+                    <div class="mb-3"><label for="prescription-file" class="form-label">Upload PDF</label><input type="file" class="form-control" id="prescription-file" accept=".pdf" required></div>
+                    <button type="submit" class="btn btn-success w-100">Analyze</button>
+                </form>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+            </div>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-header"><h4 class="mb-0">SwasthAI Assistant</h4></div>
+            <div class="chat-box" id="chat-box">
+                <div class="ai-msg"><div class="msg-bubble ai-bubble">Hello! I'm SwasthAI. You can ask me general medical questions or use the dashboard to predict an illness.</div></div>
+            </div>
+            <div class="chat-input">
+                <form id="chat-form">
+                    <div class="input-group">
+                        <input type="text" id="user-input" class="form-control" placeholder="Type your message..." autocomplete="off">
+                        <button class="btn btn-primary" type="submit">Send</button>
+                    </div>
+                </form>
+                <div id="download-container" class="text-center mt-2">
+                    <a href="/download_prediction_pdf" id="download-prediction-btn" class="btn btn-sm btn-outline-success" style="display: none;">Download Prediction PDF</a>
+                    <a href="/download_analysis_pdf" id="download-analysis-btn" class="btn btn-sm btn-outline-success" style="display: none;">Download Analysis PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Define constants for all interactive elements
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+    const chatBox = document.getElementById('chat-box');
+    const symptomsForm = document.getElementById('symptoms-form');
+    const prescriptionForm = document.getElementById('prescription-form');
+
+    // Function to show/hide sidebar panels
+    function showPanel(panelId) {
+        document.querySelectorAll('.form-container').forEach(panel => {
+            panel.style.display = 'none';
+        });
+        if (panelId && document.getElementById(panelId)) {
+            document.getElementById(panelId).style.display = 'block';
+            if (panelId === 'profile-panel') {
+                loadUserInfo();
+            }
+        }
+    }
+
+    // Load existing user info into the profile form
+    async function loadUserInfo() {
+        try {
+            const response = await fetch('/get_user_info');
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('age').value = data.age;
+                document.getElementById('allergies').value = data.allergies;
+                document.getElementById('medical_history').value = data.medical_history;
+            } else {
+                appendMessage(`Error: ${data.error}`, 'ai');
+            }
+        } catch (error) {
+            appendMessage('Could not load user profile.', 'ai');
+        }
+    }
+
+    // Function to update user profile
+    async function updateUserInfo() {
+        const payload = {
+            age: document.getElementById('age').value,
+            allergies: document.getElementById('allergies').value,
+            medical_history: document.getElementById('medical_history').value,
+        };
+        await fetch('/update_user_info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        appendMessage('Your profile has been updated successfully.', 'ai');
+    }
+
+    // Handle the start of the disease prediction flow
+    symptomsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const symptoms = [
+            document.getElementById('symptom1').value, document.getElementById('symptom2').value,
+            document.getElementById('symptom3').value, document.getElementById('symptom4').value,
+            document.getElementById('symptom5').value,
+        ].filter(s => s.trim() !== '').join(', ');
+
+        if (!symptoms) {
+            alert('Please enter at least one symptom.');
+            return;
+        }
+        
+        appendMessage(`My symptoms are: ${symptoms}`, 'user');
+        sendMessageToChatbot(symptoms, true);
+        symptomsForm.reset();
+        showPanel('none'); // Hide form after submission
+    });
+
+    // Handle regular chat messages
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = userInput.value.trim();
+        if (!message) return;
+        appendMessage(message, 'user');
+        sendMessageToChatbot(message, false);
+        userInput.value = '';
+    });
+
+    // Handle prescription file submission
+    prescriptionForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const fileInput = document.getElementById('prescription-file');
+        const file = fileInput.files[0];
+        
+        if (!file) {
+            alert('Please select a PDF file to analyze.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        appendMessage(`Analyzing prescription: ${file.name}`, 'user');
+        const thinkingMsg = appendMessage('SwasthAI is analyzing the PDF...', 'ai', true);
+
+        try {
+            const response = await fetch('/analyze_prescription', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            thinkingMsg.remove();
+            appendMessage(data.response || data.error, 'ai');
+            checkForDownloadableReport(data.response);
+        } catch (error) {
+            thinkingMsg.remove();
+            appendMessage('Failed to analyze the prescription. An error occurred.', 'ai');
+        }
+        
+        prescriptionForm.reset();
+        showPanel('none'); // Hide form after submission
+    });
+
+
+    // Central function to send messages to the backend
+    async function sendMessageToChatbot(message, isPredictionStart = false) {
+        const thinkingMsg = appendMessage('SwasthAI is thinking...', 'ai', true);
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message, is_prediction_start: isPredictionStart })
+            });
+            const data = await response.json();
+            thinkingMsg.remove();
+            appendMessage(data.response || data.error, 'ai');
+            checkForDownloadableReport(data.response);
+        } catch (error) {
+            thinkingMsg.remove();
+            appendMessage('Sorry, an error occurred. Please try again.', 'ai');
+        }
+    }
+    
+    // Function to manage download button visibility
+    function checkForDownloadableReport(responseText) {
+        const predictionBtn = document.getElementById('download-prediction-btn');
+        const analysisBtn = document.getElementById('download-analysis-btn');
+
+        predictionBtn.style.display = 'none';
+        analysisBtn.style.display = 'none';
+
+        if (!responseText) return;
+
+        if (responseText.includes('**Possible Illness(es):**')) {
+            predictionBtn.style.display = 'inline-block';
+        } else if (responseText.includes('**Overall Safety Assessment:**')) {
+            analysisBtn.style.display = 'inline-block';
+        }
+    }
+
+    // Utility function to add messages to the chat box
+    function appendMessage(message, sender, isTemporary = false) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add(sender === 'user' ? 'user-msg' : 'ai-msg');
+        const bubble = document.createElement('div');
+        bubble.classList.add('msg-bubble', sender === 'user' ? 'user-bubble' : 'ai-bubble');
+        bubble.innerText = message;
+        msgDiv.appendChild(bubble);
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        if (isTemporary) return msgDiv;
+    }
+</script>
+</body>
+</html>
