@@ -34,7 +34,7 @@ conda activate medical_chatbot
 ```
 
 ### 2. Install Dependencies
-Install all required libraries, including the Core RAG framework and Machine Learning packages:
+Install all required libraries, including the Core RAG framework, Machine Learning packages, and Evaluation tools:
 ```powershell
 # Core Project Libraries
 pip install -r requirements.txt
@@ -44,6 +44,9 @@ pip install tensorflow pandas werkzeug==2.3.7
 conda install -c conda-forge keras opencv -y
 conda install -c anaconda scikit-learn scikit-image flask -y
 pip install fpdf flask-sqlalchemy jupyter
+
+# NEW: RAG Evaluation Dependencies
+pip install sentence-transformers tqdm langchain-chroma langchain-community langchain-core
 ```
 
 ### 3. Setup Ollama and Llama 3.2
@@ -51,6 +54,27 @@ Ensure Ollama is running, then pull the required model:
 ```powershell
 ollama pull llama3.2
 ```
+
+---
+
+## 📊 Evaluation System
+
+Medicare now includes a robust evaluation suite to measure the performance of the RAG pipeline.
+
+### Running the Evaluation
+1.  **Prepare the Dataset**: Ensure `eval_dataset.json` is present in the root directory.
+2.  **Activate Environment**: `conda activate medical_chatbot`
+3.  **Run Evaluation**:
+    ```powershell
+    python evaluate_rag.py
+    ```
+
+### Metrics Measured:
+- **Exact Match (EM)**: Percent of answers that are identical to ground truth.
+- **F1 Score**: Token-level overlap between predicted and true answers.
+- **Semantic Similarity**: Vector-based meaning comparison (Local Sentence-Transformers).
+- **Latency**: Average time taken for a full RAG cycle.
+- **Error Analysis**: Automatic categorization of Hallucinations vs. Retrieval Failures.
 
 ---
 
