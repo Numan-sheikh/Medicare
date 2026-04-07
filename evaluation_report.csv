@@ -1,0 +1,104 @@
+Question,Ground Truth,Prediction,EM,F1,Semantic Similarity,Latency (s),Error Category
+How often should I take Paracetamol 500mg?,Take 1-2 tablets every 4 to 6 hours as needed. Do not take more than 8 tablets (4g) in 24 hours.,"**Overall Safety Assessment:**
+
+Based on the provided prescription context, there is no indication of any allergies or contraindications that would affect the use of Paracetamol 500mg. The user's medical history and age do not pose any specific concerns for this medication.
+
+However, it is essential to note that Paracetamol can be hepatotoxic in high doses or with prolonged use, especially when combined with alcohol or other medications. It is crucial to follow the recommended dosage and consult with a healthcare professional if there are any concerns about safety.
+
+**Dosage Check:**
+
+The prescription does not specify a dosage frequency for Paracetamol 500mg. As per the standard instructions, Paracetamol can be taken as needed, but it's always best to consult with a healthcare professional or pharmacist to determine the most appropriate dosage and schedule based on individual needs.
+
+**Allergy & Interaction Check:**
+
+There is no indication of any allergies or interactions that would affect the use of Paracetamol 500mg. However, it's essential to inform the healthcare provider about any medications, supplements, or herbal products being taken concurrently, as they may interact with Paracetamol.
+
+**Guidance:**
+
+Based on the provided prescription context, there is no guidance specifically related to Paracetamol 500mg. However, the general advice and lifestyle modifications listed in the prescription (maintaining a low sodium and low sugar diet, performing 30 minutes of brisk walking daily) are applicable to overall health and well-being.
+
+It's essential to note that this medication was not prescribed as part of the treatment plan for the user's diagnosed conditions (Type 2 Diabetes Mellitus and Mild Essential Hypertension). If you have any concerns or questions about your medications, it's best to consult with your healthcare provider.",0,0.04301075268817204,0.40170949697494507,28.93238878250122,Generation Hallucination / Deviation
+Can I take Ibuprofen if I have a stomach ulcer?,"No, you should avoid Ibuprofen if you have a stomach ulcer as it can irritate the stomach lining and cause bleeding.","**Overall Safety Assessment:**
+
+Based on the provided prescription context and the user's details, Ibuprofen can be considered safe for consumption by Rahul Verma. The user has no allergies and a clean medical history, which reduces the risk of adverse interactions.
+
+However, it is essential to note that Ibuprofen may not be suitable for individuals with stomach ulcers due to its potential to exacerbate bleeding or worsen symptoms. The prescription context mentions a patient with a mild essential hypertension who is already taking Amlodipine, but there is no specific indication of a stomach ulcer.
+
+**Dosage Check:**
+
+The provided prescription context does not mention Ibuprofen as part of Rahul Verma's medication regimen. However, the recommended dosage for patients with type 2 diabetes mellitus and mild essential hypertension typically ranges from 200mg to 400mg per day. It is crucial to follow the specific instructions provided by Dr. Anand Sharma or consult with a healthcare professional to determine an appropriate dosage.
+
+**Allergy & Interaction Check:**
+
+As Rahul Verma has no allergies, Ibuprofen can be considered safe for consumption in this case. However, it is essential to monitor for potential interactions with other medications, such as Amlodipine (as mentioned in the prescription context). It is always best to consult with a healthcare professional before taking any new medication.
+
+**Guidance:**
+
+Based on the provided prescription context and user details, it is recommended that Rahul Verma:
+
+1. Follow Dr. Anand Sharma's instructions for taking Metformin, Amlodipine, Atorvastatin, and Pan-D capsules as prescribed.
+2. Maintain a low sodium and low sugar diet as advised by Dr. Anand Sharma.
+3. Engage in 30 minutes of brisk walking daily to manage mild essential hypertension.
+4. Monitor fasting blood sugar levels every week and record readings.
+5. Drink plenty of water and stay hydrated.
+
+It is also essential for Rahul Verma to consult with his healthcare provider or Dr. Anand Sharma if he experiences any adverse effects, has questions about his medication regimen, or needs guidance on managing his type 2 diabetes mellitus and mild essential hypertension.",0,0.059523809523809514,0.5859973430633545,24.88321304321289,Generation Hallucination / Deviation
+What is the primary treatment for type 2 diabetes?,"The primary treatment includes lifestyle changes (diet and exercise), but common medications include Metformin.","**Overall Safety Assessment:**
+Based on the provided prescription context, the primary treatment for type 2 diabetes is being prescribed with a combination of medications: Metformin, Amlodipine, Atorvastatin, and Pan-D. The patient does not have any allergies mentioned in the prescription context.
+
+**Dosage Check:**
+The dosages prescribed are:
+- Metformin: 500mg
+- Amlodipine: 5mg
+- Atorvastatin: 10mg
+
+These dosages appear to be standard for a new patient with type 2 diabetes, but it's essential to verify the appropriateness of these doses based on the patient's age and other factors not mentioned in the prescription context.
+
+**Allergy & Interaction Check:**
+The patient does not have any allergies mentioned. However, it is crucial to note that Metformin can cause lactic acidosis in rare cases. Regular monitoring of fasting blood sugar levels is recommended, as stated in the prescription context. The interaction between medications and other health conditions should also be considered.
+
+**Guidance:**
+The prescription emphasizes the importance of lifestyle modifications:
+- Maintain a low sodium and low sugar diet.
+- 30 minutes of brisk walking daily.
+- Drink plenty of water and stay hydrated.
+- Monitor fasting blood sugar every week and record readings.
+- Follow-up with Dr. Anand Sharma after 1 month to review HbA1c and Lipid Profile reports.
+
+It is essential for the healthcare provider to discuss these lifestyle modifications with the patient and ensure they understand their importance in managing type 2 diabetes effectively.",0,0.07272727272727274,0.4997090697288513,20.121992826461792,Generation Hallucination / Deviation
+What are the common symptoms of a common cold?,"Common symptoms include a runny or stuffy nose, sore throat, cough, congestion, and slight body aches.","**Overall Safety Assessment:**
+Based on the provided prescription context, there is no indication of any allergies that would be relevant to this user's details. The user has no chronic conditions and none are mentioned in the medical history section.
+
+**Dosage Check:**
+The dosages prescribed for Type 2 Diabetes Mellitus (Metformin), Mild Essential Hypertension (Amlodipine), and Cholesterol Management (Atorvastatin) seem appropriate based on the user's age and gender. However, it is essential to monitor fasting blood sugar levels weekly and record readings as part of the treatment plan.
+
+**Allergy & Interaction Check:**
+Since there are no allergies mentioned in the user's details, this section can be considered clear. Nevertheless, a thorough review of potential interactions between medications should be conducted with Dr. Anand Sharma to ensure safe co-prescription.
+
+**Guidance:**
+The general advice provided by Dr. Anand Sharma includes maintaining a low sodium and low sugar diet, along with 30 minutes of brisk walking daily. It is essential for the user to adhere to these lifestyle modifications as part of their treatment plan.",0,0.01149425287356322,0.28041350841522217,15.81054973602295,Retrieval Failure / Irrelevant
+Is Amoxicillin an antibiotic or an antiviral?,Amoxicillin is an antibiotic used to treat bacterial infections.,"**Overall Safety Assessment:**
+Based on the provided prescription context, there are no apparent concerns for the user's safety. The medications prescribed are for conditions common in a 45-year-old male with Type 2 Diabetes Mellitus and mild Essential Hypertension, such as Metformin, Amlodipine, and Atorvastatin. However, it is essential to note that the user does not have any known allergies and has no chronic medical conditions.
+
+**Dosage Check:**
+The prescribed dosages appear to be standard for the medications:
+- Metformin 500mg after meals
+- Amlodipine 5mg before breakfast
+- Atorvastatin 10mg at bedtime
+
+These dosages are suitable for a patient with Type 2 Diabetes Mellitus and mild Essential Hypertension. However, it is crucial to ensure the user understands and adheres to the dosage instructions.
+
+**Allergy & Interaction Check:**
+Based on the provided prescription context, there are no allergies listed for the user, which reduces the risk of allergic reactions to the prescribed medications.
+
+As for interactions, there is no specific information provided about potential drug-drug or drug-lifestyle interactions. However, Metformin and Atorvastatin may interact with certain medications, such as oral hypoglycemic agents, warfarin, and certain antibiotics. The user should inform their doctor if they are taking any other medications.
+
+**Guidance:**
+The prescription includes the following guidance:
+
+- Maintain a low sodium and low sugar diet
+- 30 minutes of brisk walking daily
+
+It is essential for the user to follow these lifestyle modifications as part of their treatment plan. Regular monitoring of fasting blood sugar levels every week, along with the latest HbA1c and Lipid Profile reports, will help track the effectiveness of the prescribed medications and make necessary adjustments.
+
+In summary, based on the provided prescription context, there are no apparent safety concerns or significant issues with the dosages. However, it is crucial for the user to follow the guidance and lifestyle modifications provided, and inform their doctor about any other medications they may be taking.",0,0.013698630136986302,0.17942847311496735,24.33594298362732,Retrieval Failure / Irrelevant

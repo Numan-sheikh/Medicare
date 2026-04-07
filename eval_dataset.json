@@ -1,0 +1,22 @@
+[
+  {
+    "question": "How often should I take Paracetamol 500mg?",
+    "ground_truth_answer": "Take 1-2 tablets every 4 to 6 hours as needed. Do not take more than 8 tablets (4g) in 24 hours."
+  },
+  {
+    "question": "Can I take Ibuprofen if I have a stomach ulcer?",
+    "ground_truth_answer": "No, you should avoid Ibuprofen if you have a stomach ulcer as it can irritate the stomach lining and cause bleeding."
+  },
+  {
+    "question": "What is the primary treatment for type 2 diabetes?",
+    "ground_truth_answer": "The primary treatment includes lifestyle changes (diet and exercise), but common medications include Metformin."
+  },
+  {
+    "question": "What are the common symptoms of a common cold?",
+    "ground_truth_answer": "Common symptoms include a runny or stuffy nose, sore throat, cough, congestion, and slight body aches."
+  },
+  {
+    "question": "Is Amoxicillin an antibiotic or an antiviral?",
+    "ground_truth_answer": "Amoxicillin is an antibiotic used to treat bacterial infections."
+  }
+]

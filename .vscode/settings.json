@@ -1,7 +1,0 @@
-{
-    "python-envs.defaultEnvManager": "ms-python.python:system",
-    "python.defaultInterpreterPath": "d:\\Medicare-main\\.venv311\\Scripts\\python.exe",
-    "python.analysis.extraPaths": [
-        "d:\\Medicare-main\\.venv311\\Lib\\site-packages"
-    ]
-}

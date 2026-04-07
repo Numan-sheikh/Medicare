@@ -46,19 +46,8 @@ conda install -c anaconda scikit-learn scikit-image flask -y
 pip install fpdf flask-sqlalchemy jupyter
 ```
 
-### 3. Install OCR prerequisites and setup Ollama + Llama 3.2
-The prescription analysis mode now supports scanned pages or images (handwritten/typed). Install these additional tools:
-
-- **Tesseract OCR** (necessary for `pytesseract` in Python)
-  - Windows: https://github.com/tesseract-ocr/tesseract#windows
-  - Mac: `brew install tesseract`
-  - Linux: `sudo apt install tesseract-ocr`
-- **Poppler** (for `pdf2image`) - used for rendering PDF pages
-  - Windows: https://poppler.freedesktop.org/
-  - Mac: `brew install poppler`
-  - Linux: `sudo apt install poppler-utils`
-
-Then pull the required Ollama model:
+### 3. Setup Ollama and Llama 3.2
+Ensure Ollama is running, then pull the required model:
 ```powershell
 ollama pull llama3.2
 ```

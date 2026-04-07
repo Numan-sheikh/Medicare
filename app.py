@@ -12,16 +12,6 @@ from langchain_chroma import Chroma
 from langchain.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
-from langchain.schema import Document
-from PIL import Image
-import pytesseract
-from pytesseract import TesseractNotFoundError
-import sys
-
-if sys.platform.startswith('win'):
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
-from pdf2image import convert_from_path
 import json
 from fpdf import FPDF
 
@@ -63,34 +53,6 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
 # ==================== Helper Functions ====================
-
-def extract_text_from_image(file_path):
-    try:
-        image = Image.open(file_path)
-        return pytesseract.image_to_string(image)
-    except TesseractNotFoundError:
-        raise ValueError(
-            "Tesseract not found: install Tesseract OCR and set system PATH. "
-            "https://github.com/tesseract-ocr/tesseract#installation"
-        )
-    except Exception as e:
-        raise ValueError(f"OCR extraction failed for image file: {e}")
-
-
-def extract_text_from_pdf_with_ocr(file_path):
-    try:
-        pages = convert_from_path(file_path, dpi=300)
-        page_texts = [pytesseract.image_to_string(page) for page in pages]
-        return "\n\n".join(t for t in page_texts if t.strip())
-    except TesseractNotFoundError:
-        raise ValueError(
-            "Tesseract not found: install Tesseract OCR and set system PATH. "
-            "https://github.com/tesseract-ocr/tesseract#installation"
-        )
-    except Exception as e:
-        raise ValueError(f"PDF OCR extraction failed: {e}")
-
-
 def create_pdf_report(title, content):
     pdf = FPDF()
     pdf.add_page()
@@ -113,37 +75,19 @@ def setup_rag_chain_from_file(file_path):
         
         if os.path.exists(DB_PATH):
             shutil.rmtree(DB_PATH)
-
-        _, ext = os.path.splitext(file_path)
-        ext = ext.lower().strip('.')
-
-        documents = []
-        if ext == 'pdf':
-            loader = PyPDFLoader(file_path)
-            documents = loader.load()
-
-            if not documents or all(not hasattr(doc, 'page_content') or not doc.page_content.strip() for doc in documents):
-                ocr_text = extract_text_from_pdf_with_ocr(file_path)
-                if not ocr_text.strip():
-                    raise ValueError("No readable text found in the PDF by text extraction or OCR.")
-                documents = [Document(page_content=ocr_text, metadata={'source': file_path})]
-        elif ext in ['jpg', 'jpeg', 'png', 'bmp', 'tiff', 'webp']:
-            ocr_text = extract_text_from_image(file_path)
-            if not ocr_text.strip():
-                raise ValueError("No text could be extracted from the uploaded image.")
-            documents = [Document(page_content=ocr_text, metadata={'source': file_path})]
-        else:
-            raise ValueError("Unsupported file format. Please upload PDF or image (JPG/PNG/BMP/TIFF/WEBP).")
-
-        # CHECK: Was any text actually extracted?
+            
+        loader = PyPDFLoader(file_path)
+        documents = loader.load()
+        
+        # CHECK: Was any text actually extracted? (Detect scanned images or empty files)
         if not documents:
-            raise ValueError("No readable text found in the file. Please ensure your prescription is clear and legible.")
-
+            raise ValueError("No readable text found in the PDF. Please ensure your prescription is not a low-quality scan or photo.")
+            
         docs = text_splitter.split_documents(documents)
         
         # Double check split results
         if not docs:
-            raise ValueError("The extracted content could not be processed into chunks.")
+            raise ValueError("The PDF content was found but could not be processed into chunks.")
 
         # Initialize Chroma with explicit persistence settings
         vectorstore = Chroma.from_documents(
@@ -168,11 +112,9 @@ def setup_rag_chain_from_file(file_path):
             | rag_prompt | llm | StrOutputParser()
         )
         return True
-    except ValueError:
-        raise
     except Exception as e:
         print(f"Error setting up RAG chain: {e}")
-        raise ValueError("Failed to process the prescription file due to an internal error.")
+        return False
 
 # ==================== Routes ====================
 
@@ -335,16 +277,11 @@ def analyze_prescription():
     if 'file' not in request.files: return jsonify({'error': 'No prescription file provided.'}), 400
     file = request.files['file']
     if file.filename == '': return jsonify({'error': 'No file selected.'}), 400
-
-    allowed_ext = {'pdf', 'jpg', 'jpeg', 'png', 'bmp', 'tiff', 'webp'}
-    ext = os.path.splitext(file.filename)[1].lower().strip('.')
-    if ext not in allowed_ext:
-        return jsonify({'error': 'Unsupported file type. Upload PDF or JPEG/PNG/BMP/TIFF/WEBP image.'}), 400
-
     try:
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(file_path)
-        setup_rag_chain_from_file(file_path)
+        if not setup_rag_chain_from_file(file_path):
+            return jsonify({'error': 'Failed to process the prescription PDF.'}), 500
         user = db.session.get(User, session['user_id'])
         user_details = f"Age: {user.age}, Allergies: {user.allergies}, Medical History: {user.medical_history}"
         analysis_result = rag_chain.invoke(user_details)
