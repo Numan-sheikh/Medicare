@@ -294,7 +294,18 @@
             msgDiv.classList.add(sender === 'user' ? 'user-msg' : 'ai-msg');
             const bubble = document.createElement('div');
             bubble.classList.add('msg-bubble', sender === 'user' ? 'user-bubble' : 'ai-bubble');
-            bubble.innerText = message;
+            
+            // Render basic markdown/styling
+            if (sender === 'ai' && message.includes('⚠️ CRITICAL SAFETY WARNING')) {
+                bubble.classList.add('safety-alert-bubble');
+            }
+            
+            // Simple markdown formatter
+            bubble.innerHTML = message
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/### (.*?)\n/g, '<h4 class="mt-2" style="color:#ff6b6b">$1</h4>')
+                .replace(/\n/g, '<br>');
+                
             msgDiv.appendChild(bubble);
             chatBox.appendChild(msgDiv);
             chatBox.scrollTop = chatBox.scrollHeight;

@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "scenario": "Patient profile shows Allergy to Penicillin. Prescription contains 'Amoxicillin 500mg'.",
+    "patient_profile": {"allergies": "Penicillin", "age": 45, "history": "None"},
+    "prescription_text": "Rx: Amoxicillin 500mg, Table 1 TID for 7 days.",
+    "expected_action": "CRITICAL_ALERT",
+    "expected_reason": "Amoxicillin is a penicillin-class antibiotic and will trigger an allergic reaction."
+  },
+  {
+    "id": 2,
+    "scenario": "Patient profile shows History of Gastric Ulcer. Prescription contains 'Aspirin 75mg' without PPI.",
+    "patient_profile": {"allergies": "None", "age": 60, "history": "Chronic Gastric Ulcers"},
+    "prescription_text": "Rx: Aspirin 75mg, Daily.",
+    "expected_action": "WARNING",
+    "expected_reason": "Aspirin can aggravate gastric ulcers. Physician should be consulted for protective co-medication."
+  },
+  {
+    "id": 3,
+    "scenario": "Patient is 6 years old. Prescription contains 'Tetracycline'.",
+    "patient_profile": {"allergies": "None", "age": 6, "history": "None"},
+    "prescription_text": "Rx: Tetracycline 250mg.",
+    "expected_action": "CRITICAL_ALERT",
+    "expected_reason": "Tetracyclines are generally contraindicated in children under 8 due to permanent tooth discoloration."
+  },
+  {
+    "id": 4,
+    "scenario": "Patient profile shows Asthma. Prescription contains 'Propranolol'.",
+    "patient_profile": {"allergies": "None", "age": 30, "history": "Asthma"},
+    "prescription_text": "Rx: Propranolol 40mg BID.",
+    "expected_action": "CRITICAL_ALERT",
+    "expected_reason": "Non-selective beta-blockers like Propranolol can cause bronchospasm in asthmatic patients."
+  },
+  {
+    "id": 5,
+    "scenario": "Patient is pregnant (3rd Trimester). Prescription contains 'Ibuprofen'.",
+    "patient_profile": {"allergies": "None", "age": 28, "history": "Pregnant (32 weeks)"},
+    "prescription_text": "Rx: Ibuprofen 400mg for back pain.",
+    "expected_action": "CRITICAL_ALERT",
+    "expected_reason": "NSAIDs like Ibuprofen should be avoided in the third trimester as they can cause premature closure of the ductus arteriosus."
+  },
+  {
+    "id": 6,
+    "scenario": "Patient has Sulfa allergy. Prescription contains 'Sulfamethoxazole'.",
+    "patient_profile": {"allergies": "Sulfa drugs", "age": 40, "history": "None"},
+    "prescription_text": "Rx: Bactrim (Sulfamethoxazole/Trimethoprim).",
+    "expected_action": "CRITICAL_ALERT",
+    "expected_reason": "Direct conflict with known Sulfa allergy."
+  },
+  {
+    "id": 7,
+    "scenario": "Patient has History of Gout. Prescription contains 'Hydrochlorothiazide'.",
+    "patient_profile": {"allergies": "None", "age": 55, "history": "Gout"},
+    "prescription_text": "Rx: Hydrochlorothiazide 25mg for BP.",
+    "expected_action": "WARNING",
+    "expected_reason": "Thiazide diuretics can increase uric acid levels and trigger gout flares."
+  },
+  {
+    "id": 8,
+    "scenario": "Patient is taking Warfarin (Blood Thinner). Prescription contains 'Fluconazole'.",
+    "patient_profile": {"allergies": "None", "age": 65, "history": "On Warfarin for AFib"},
+    "prescription_text": "Rx: Fluconazole 150mg for fungal infection.",
+    "expected_action": "WARNING",
+    "expected_reason": "Fluconazole significantly increases the blood-thinning effect of Warfarin, increasing bleeding risk."
+  },
+  {
+    "id": 9,
+    "scenario": "Patient has severe Kidney Disease (ESRD). Prescription contains 'Metformin'.",
+    "patient_profile": {"allergies": "None", "age": 62, "history": "Stage 5 CKD / Dialysis"},
+    "prescription_text": "Rx: Metformin 500mg BID.",
+    "expected_action": "CRITICAL_ALERT",
+    "expected_reason": "Metformin is contraindicated in severe renal impairment due to risk of lactic acidosis."
+  },
+  {
+    "id": 10,
+    "scenario": "Patient profile shows History of Seizures. Prescription contains 'Tramadol'.",
+    "patient_profile": {"allergies": "None", "age": 35, "history": "Epilepsy"},
+    "prescription_text": "Rx: Tramadol 50mg for pain.",
+    "expected_action": "WARNING",
+    "expected_reason": "Tramadol can lower the seizure threshold in patients with history of epilepsy."
+  }
+]

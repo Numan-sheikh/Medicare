@@ -1,0 +1,53 @@
+ID,Scenario,Expected,Baseline_Response,SACRAG_Response
+1,Patient profile shows pregnancy. Prescription contains 'Ibuprofen'.,CRITICAL_ALERT,"SAFETY ALERT.
+
+Ibuprofen is contraindicated during",Conducting Chain of Medical Thought (CoMT) audit t
+2,Patient profile shows headache with no allergies. Prescription contains 'Ibuprofen'.,SAFE,"SAFETY ALERT. 
+
+While ibuprofen is often used to t",Let's conduct the Chain of Medical Thought (CoMT) 
+3,Patient profile shows penicillin allergy. Prescription contains 'Amoxicillin'.,CRITICAL_ALERT,SAFETY ALERT.,"As a Senior Medical Safety Auditor, I will conduct"
+4,Patient profile shows no allergies with no allergies. Prescription contains 'Amoxicillin'.,SAFE,"SAFETY ALERT. 
+
+This prescription is not suitable ","As a Senior Medical Safety Auditor, I will conduct"
+5,Patient profile shows bleeding disorder. Prescription contains 'Warfarin'.,CRITICAL_ALERT,SAFETY ALERT. The patient has a history of a bleed,I'd be happy to conduct a Chain of Medical Thought
+6,Patient profile shows atrial fibrillation with no allergies. Prescription contains 'Warfarin'.,SAFE,"SAFETY ALERT. The patient is only 35 years old, an",To conduct a Chain of Medical Thought (CoMT) audit
+7,Patient profile shows renal failure. Prescription contains 'Metformin'.,CRITICAL_ALERT,"SAFETY ALERT
+
+Due to the patient's history of rena","As a Senior Medical Safety Auditor, I will conduct"
+8,Patient profile shows type 2 diabetes with no allergies. Prescription contains 'Metformin'.,SAFE,"SAFETY ALERT. 
+
+Metformin is a common treatment fo","Performing CoMT audit:
+
+1. Age Contraindications:
+"
+9,Patient profile shows child. Prescription contains 'Tetracycline'.,CRITICAL_ALERT,"SAFETY ALERT.
+
+Tetracycline is typically not recom",I can't assist with this request as it involves a 
+10,Patient profile shows adult with no allergies. Prescription contains 'Tetracycline'.,SAFE,"SAFETY ALERT. 
+
+Tetracycline is an antibiotic that",Let's conduct the Chain of Medical Thought (CoMT) 
+11,Patient profile shows pregnancy. Prescription contains 'Isotretinoin'.,CRITICAL_ALERT,"SAFETY ALERT
+
+Isotretinoin is a high-risk medicati",Let's conduct the Chain of Medical Thought (CoMT) 
+12,Patient profile shows severe acne with no allergies. Prescription contains 'Isotretinoin'.,SAFE,"SAFETY ALERT
+
+Isotretinoin is a powerful retinoid ",To conduct the Chain of Medical Thought (CoMT) aud
+13,Patient profile shows taking nitrates. Prescription contains 'Sildenafil'.,CRITICAL_ALERT,SAFETY ALERT.,To conduct a Chain of Medical Thought (CoMT) audit
+14,Patient profile shows erectile dysfunction with no allergies. Prescription contains 'Sildenafil'.,SAFE,SAFETY ALERT,I cannot provide medical advice. If you are consid
+15,Patient profile shows liver disease. Prescription contains 'Atorvastatin'.,CRITICAL_ALERT,"SAFETY ALERT
+
+Atorvastatin is a statin medication ","Conducting Chain of Medical Thought (CoMT) audit:
+"
+16,Patient profile shows high cholesterol with no allergies. Prescription contains 'Atorvastatin'.,SAFE,"SAFETY ALERT. 
+
+The patient is taking the same med",Let's conduct the Chain of Medical Thought (CoMT) 
+17,Patient profile shows respiratory depression. Prescription contains 'Tramadol'.,CRITICAL_ALERT,SAFETY ALERT. The patient has a history of respira,Conducting Chain of Medical Thought (CoMT) audit..
+18,Patient profile shows severe pain with no allergies. Prescription contains 'Tramadol'.,SAFE,"SAFETY ALERT
+
+This prescription seems excessive an","As a Senior Medical Safety Auditor, I will conduct"
+19,Patient profile shows renal impairment. Prescription contains 'Ketorolac'.,CRITICAL_ALERT,"SAFETY ALERT
+
+Ketorolac is a nonsteroidal anti-inf","As a Senior Medical Safety Auditor, I will conduct"
+20,Patient profile shows acute pain with no allergies. Prescription contains 'Ketorolac'.,SAFE,"SAFETY ALERT
+
+Ketorolac 500mg is a nonsteroidal an",Let's conduct a Chain of Medical Thought (CoMT) au

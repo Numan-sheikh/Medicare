@@ -15,6 +15,22 @@ from langchain_core.output_parsers import StrOutputParser
 import json
 from fpdf import FPDF
 
+try:
+    from presidio_analyzer import AnalyzerEngine
+    from presidio_anonymizer import AnonymizerEngine
+    analyzer = AnalyzerEngine()
+    anonymizer = AnonymizerEngine()
+except ImportError:
+    analyzer = None
+    anonymizer = None
+
+def anonymize_text(text):
+    if not analyzer or not anonymizer:
+        return text # Fallback if presidio isn't installed properly
+    results = analyzer.analyze(text=text, entities=["PERSON", "PHONE_NUMBER", "EMAIL_ADDRESS", "LOCATION", "CREDIT_CARD", "SSN"], language='en')
+    anonymized_result = anonymizer.anonymize(text=text, analyzer_results=results)
+    return anonymized_result.text
+
 # Load environment variables
 load_dotenv()
 
@@ -83,6 +99,11 @@ def setup_rag_chain_from_file(file_path):
         if not documents:
             raise ValueError("No readable text found in the PDF. Please ensure your prescription is not a low-quality scan or photo.")
             
+        # PII Redaction Step
+        print("Scrubbing PII from prescription...")
+        for doc in documents:
+            doc.page_content = anonymize_text(doc.page_content)
+            
         docs = text_splitter.split_documents(documents)
         
         # Double check split results
@@ -97,14 +118,22 @@ def setup_rag_chain_from_file(file_path):
             collection_name="medical_docs" # Using a named collection for stability
         )
         rag_prompt_template = """
-        SYSTEM PERSONA: You are Medicare, a prescription analysis expert.
-        USER DETAILS: {user_details}
-        PRESCRIPTION CONTEXT: {context}
-        YOUR TASK: Analyze the provided prescription context based on the user's details. Structure your response with these exact markdown headings:
-        **Overall Safety Assessment:**
-        **Dosage Check:**
-        **Allergy & Interaction Check:**
-        **Guidance:**
+        SYSTEM PERSONA: You are Medicare, a professional medical prescription analysis expert. 
+        USER CLINICAL PROFILE: {user_details}
+        PRESCRIPTION TEXT (Retrieved Context): {context}
+        
+        TASK: Conduct a rigorous analysis of the prescription. 
+        1. Identify the medications and their dosages.
+        2. Cross-reference with the User Clinical Profile (Allergies, History, Age).
+        3. Flag any potential contradictions or safety risks.
+        
+        Structure your response with these exact markdown headings:
+        **1. Medications Found:**
+        **2. Dosage & Safety Assessment:**
+        **3. Allergy & Interaction Check:**
+        **4. Clinical Guidance:**
+        
+        IMPORTANT: If the prescription text is unclear or if there is a direct conflict with the user's allergies, you MUST highlight this in the Safety Assessment.
         """
         rag_prompt = PromptTemplate.from_template(rag_prompt_template)
         rag_chain = (
@@ -242,6 +271,14 @@ def chat():
             session.pop('symptom_data', None)
             session.pop('follow_up_questions', None)
         else: # GENERAL chat stage
+            # TRIAGE ROUTER (Guardrail)
+            triage_prompt = f"Is the following input related to healthcare, medical advice, or inquiring about a medical prescription?\nInput: '{user_input}'\nReply EXACTLY with the word 'NO' ONLY if it is completely unrelated (like coding, math, or general knowledge). Reply 'YES' if it relates to the patient's health or their uploaded files."
+            triage_result = llm.invoke(triage_prompt).strip().upper()
+            
+            # If the model explicitly says NO, block it.
+            if triage_result.startswith("NO") or " NO " in f" {triage_result} ":
+                return jsonify({'response': "I am Medicare, a clinical AI assistant. I am strictly designed for healthcare queries and cannot answer non-medical questions. How can I assist you with your health today?"})
+                
             prompt = f"You are Medicare, a helpful medical assistant. A user with profile ({user_profile}) asks: '{user_input}'. Answer informatively."
             ai_response = llm.invoke(prompt)
         return jsonify({'response': ai_response})
@@ -284,10 +321,45 @@ def analyze_prescription():
             return jsonify({'error': 'Failed to process the prescription PDF.'}), 500
         user = db.session.get(User, session['user_id'])
         user_details = f"Age: {user.age}, Allergies: {user.allergies}, Medical History: {user.medical_history}"
+        
+        # Step 1: Initial RAG Analysis
         analysis_result = rag_chain.invoke(user_details)
-        session['last_analysis_result'] = analysis_result
+        
+        # Step 1.5: Retrieve from WHO Guidelines (Ground Truth)
+        try:
+            who_vectorstore = Chroma(persist_directory='chroma_who_guidelines', embedding_function=embedding_model, collection_name="who_guidelines")
+            who_docs = who_vectorstore.similarity_search(analysis_result, k=2)
+            who_context = "\n".join([f"[Page {d.metadata.get('page', 'Unknown')}] {d.page_content}" for d in who_docs])
+        except Exception:
+            who_context = "WHO Guidelines unavailable."
+
+        # Step 2: SA-CRAG CoMT Safety Validator Loop (The Research Novelty)
+        validator_prompt = f"""
+        ACT AS: Senior Medical Safety Auditor.
+        USER PROFILE: {user_details}
+        AI ANALYSIS TO AUDIT: {analysis_result}
+        WHO GUIDELINES: {who_context}
+        
+        TASK: Conduct a Chain of Medical Thought (CoMT) audit to catch any missed conflicts.
+        Methodically check these 4 parameters:
+        1. Age Contraindications
+        2. Pregnancy/Lactation Risks
+        3. Known Allergies
+        4. Drug-Drug Interactions / Medical History
+        
+        If ALL 4 checks pass securely, you MUST respond exactly with just: "SAFE".
+        If ANY check fails, respond with: "SAFETY ALERT: [describe risk and YOU MUST prominently cite the exact WHO [Page X] or conflict from context]".
+        Do not provide a full report, just "SAFE" or the Alert.
+        """
+        safety_audit = llm.invoke(validator_prompt).strip()
+        
+        final_response = analysis_result
+        if "SAFETY ALERT" in safety_audit.upper():
+            final_response = f"### ⚠️ CRITICAL SAFETY WARNING\n**{safety_audit}**\n\n---\n" + analysis_result
+            
+        session['last_analysis_result'] = final_response
         session.pop('last_prediction_result', None)
-        return jsonify({'response': analysis_result})
+        return jsonify({'response': final_response})
     except ValueError as ve:
         print(f"Validation error setting up RAG: {ve}")
         return jsonify({'error': str(ve)}), 400
