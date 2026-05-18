@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/templatemo-neural-style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/minimal-medical.css') }}" rel="stylesheet">
     <style>
        /* Custom styles for the team section */
        .team-grid {
@@ -47,15 +47,8 @@
     </style>
 </head>
 <body>
-    <div class="neural-background"></div>
-    <div class="geometric-shapes">
-        <div class="shape"></div> <div class="shape"></div> <div class="shape"></div> <div class="shape"></div>
-    </div>
-    <div class="neural-lines">
-        <div class="neural-line"></div> <div class="neural-line"></div> <div class="neural-line"></div>
-    </div>
 
-    <header class="glass">
+    <header>
         <nav>
             <a href="#home" class="logo">
                 <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e0a3ff"/><stop offset="50%" style="stop-color:#ff69b4"/><stop offset="100%" style="stop-color:#9370db"/></linearGradient></defs><circle cx="50" cy="30" r="8" fill="url(#logoGradient)"/><circle cx="30" cy="60" r="6" fill="url(#logoGradient)"/><circle cx="70" cy="65" r="7" fill="url(#logoGradient)"/><line x1="50" y1="30" x2="30" y2="60" stroke="url(#logoGradient)" stroke-width="2"/><line x1="50" y1="30" x2="70" y2="65" stroke="url(#logoGradient)" stroke-width="2"/><line x1="30" y1="60" x2="70" y2="65" stroke="url(#logoGradient)" stroke-width="2"/></svg>
@@ -118,28 +111,28 @@
             <h2 class="section-title">Core Features</h2>
             <div class="diagonal-grid">
                 <div class="feature-row">
-                    <div class="feature-content glass">
+                    <div class="feature-content">
                         <div class="feature-icon">🩺</div>
                         <h3>AI Disease Prediction</h3>
                         <p>Enter your symptoms and our AI will conduct a guided conversation to predict possible illnesses and suggest safe, generic over-the-counter remedies.</p>
                     </div>
-                    <div class="feature-visual glass visual-prediction"></div>
+                    <div class="feature-visual visual-prediction"></div>
                 </div>
                 <div class="feature-row">
-                    <div class="feature-content glass">
+                    <div class="feature-content">
                         <div class="feature-icon">📄</div>
                         <h3>Prescription Analysis</h3>
                         <p>Upload a prescription PDF. Our RAG-supported AI analyzes it for dosage safety, potential allergic reactions, and drug interactions based on your profile.</p>
                     </div>
-                    <div class="feature-visual glass visual-analysis"></div>
+                    <div class="feature-visual visual-analysis"></div>
                 </div>
                 <div class="feature-row">
-                    <div class="feature-content glass">
+                    <div class="feature-content">
                         <div class="feature-icon">💾</div>
                         <h3>Downloadable Reports</h3>
                         <p>After every prediction or analysis, you can download a complete, formatted PDF report for your personal records or to share with a healthcare professional.</p>
                     </div>
-                    <div class="feature-visual glass visual-pdf"></div>
+                    <div class="feature-visual visual-pdf"></div>
                 </div>
             </div>
         </div>
@@ -148,12 +141,12 @@
     <section class="showcase" id="technologies">
         <h2 class="section-title">Technologies We Use</h2>
         <div class="hexagon-container">
-            <div class="hexagon"><div class="hexagon-inner glass"><div class="hexagon-icon">🐍</div><h4>Python & Flask</h4><p>Robust and scalable backend foundation</p></div></div>
-            <div class="hexagon"><div class="hexagon-inner glass"><div class="hexagon-icon">🧠</div><h4>Ollama & LLMs</h4><p>Powering our intelligent conversational AI</p></div></div>
-            <div class="hexagon"><div class="hexagon-inner glass"><div class="hexagon-icon">🔗</div><h4>LangChain</h4><p>Structuring AI logic and workflows</p></div></div>
-            <div class="hexagon"><div class="hexagon-inner glass"><div class="hexagon-icon">📚</div><h4>RAG System</h4><p>For accurate, context-aware analysis</p></div></div>
-            <div class="hexagon"><div class="hexagon-inner glass"><div class="hexagon-icon">💻</div><h4>HTML/CSS/JS</h4><p>Modern and responsive user interface</p></div></div>
-            <div class="hexagon"><div class="hexagon-inner glass"><div class="hexagon-icon">🔒</div><h4>SQLAlchemy</h4><p>Secure management of user data</p></div></div>
+            <div class="hexagon"><div class="hexagon-inner"><div class="hexagon-icon">🐍</div><h4>Python & Flask</h4><p>Robust and scalable backend foundation</p></div></div>
+            <div class="hexagon"><div class="hexagon-inner"><div class="hexagon-icon">🧠</div><h4>Ollama & LLMs</h4><p>Powering our intelligent conversational AI</p></div></div>
+            <div class="hexagon"><div class="hexagon-inner"><div class="hexagon-icon">🔗</div><h4>LangChain</h4><p>Structuring AI logic and workflows</p></div></div>
+            <div class="hexagon"><div class="hexagon-inner"><div class="hexagon-icon">📚</div><h4>RAG System</h4><p>For accurate, context-aware analysis</p></div></div>
+            <div class="hexagon"><div class="hexagon-inner"><div class="hexagon-icon">💻</div><h4>HTML/CSS/JS</h4><p>Modern and responsive user interface</p></div></div>
+            <div class="hexagon"><div class="hexagon-inner"><div class="hexagon-icon">🔒</div><h4>SQLAlchemy</h4><p>Secure management of user data</p></div></div>
         </div>
     </section>
 
@@ -162,28 +155,28 @@
         <div class="timeline-container">
             <div class="timeline-line"></div>
             <div class="timeline-item">
-                <div class="timeline-content glass"><div class="timeline-year">The Problem</div><h4>Lack of Access</h4><p>In many parts of India, immediate access to medical advice is a challenge, leading to delayed care and self-medication risks.</p></div><div class="timeline-dot"></div>
+                <div class="timeline-content"><div class="timeline-year">The Problem</div><h4>Lack of Access</h4><p>In many parts of India, immediate access to medical advice is a challenge, leading to delayed care and self-medication risks.</p></div><div class="timeline-dot"></div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-content glass"><div class="timeline-year">Our Mission</div><h4>Empowerment</h4><p>To provide a safe, reliable, and accessible first point of contact for healthcare queries, empowering users to make informed decisions.</p></div><div class="timeline-dot"></div>
+                <div class="timeline-content"><div class="timeline-year">Our Mission</div><h4>Empowerment</h4><p>To provide a safe, reliable, and accessible first point of contact for healthcare queries, empowering users to make informed decisions.</p></div><div class="timeline-dot"></div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-content glass"><div class="timeline-year">The Solution</div><h4>AI as a First Doctor</h4><p>Medicare acts as a virtual doctor, offering instant guidance for non-emergency situations and flagging potential risks in prescriptions.</p></div><div class="timeline-dot"></div>
+                <div class="timeline-content"><div class="timeline-year">The Solution</div><h4>AI as a First Doctor</h4><p>Medicare acts as a virtual doctor, offering instant guidance for non-emergency situations and flagging potential risks in prescriptions.</p></div><div class="timeline-dot"></div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-content glass"><div class="timeline-year">The Impact</div><h4>Safer Healthcare</h4><p>By promoting awareness and providing data-driven suggestions, we aim to reduce medication errors and encourage timely professional consultation.</p></div><div class="timeline-dot"></div>
+                <div class="timeline-content"><div class="timeline-year">The Impact</div><h4>Safer Healthcare</h4><p>By promoting awareness and providing data-driven suggestions, we aim to reduce medication errors and encourage timely professional consultation.</p></div><div class="timeline-dot"></div>
             </div>
         </div>
     </section>
 
     <section class="contact" id="about-team">
         <div class="contact-container">
-            <div class="contact-info glass">
+            <div class="contact-info">
                 <h3>About Medicare</h3>
                 <p>Medicare is an innovative project designed to bridge the gap in primary healthcare access. Leveraging the power of large language models and retrieval-augmented generation, we offer a tool that is not just a symptom checker, but a comprehensive safety net for initial medical queries.</p>
                 <p>Our goal is to make healthcare guidance more accessible and safer for everyone, from bustling cities to remote villages.</p>
             </div>
-            <div class="contact-form glass">
+            <div class="contact-form">
                 <h3 class="text-center mb-4">Meet the Team</h3>
                 <div class="team-grid">
                     <div class="team-member">
